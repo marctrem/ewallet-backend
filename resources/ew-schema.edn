@@ -1,0 +1,260 @@
+[
+
+ ;; user
+
+ ; name
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :user/nom
+  :db/valueType          :db.type/string
+  :db/fulltext           true
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Nom d'un utilisateur"
+  :db.install/_attribute :db.part/db}
+
+ ; Courriel
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :user/courriel
+  :db/valueType          :db.type/string
+  :db/unique             db.unique/value
+  :db/fulltext           true
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Courriel d'un utilisateur"
+  :db.install/_attribute :db.part/db}
+
+ ; mot-de-passe
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :user/motdepasse
+  :db/valueType          :db.type/string
+  :db/fulltext           false
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Mot de passe d'un utilisateur"
+  :db.install/_attribute :db.part/db}
+
+ ; catégorie d'utilisateur
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :user/categorie
+  :db/valueType          :db.type/ref
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Catégorie de l'utilisateur"
+  :db.install/_attribute :db.part/db}
+
+ [:db/add #db/id[:db.part/user] :db/ident :categorie/service-clientelle]
+ [:db/add #db/id[:db.part/user] :db/ident :categorie/organisateur]
+ [:db/add #db/id[:db.part/user] :db/ident :categorie/commis]
+ [:db/add #db/id[:db.part/user] :db/ident :categorie/vendeur]
+
+ ; compte actif?
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :user/actif
+  :db/valueType          :db.type/boolean
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Le compte de l'utilisateur est actif?"
+  :db.install/_attribute :db.part/db}
+
+ ; Transaction effectuée
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :user/transact
+  :db/valueType          :db.type/ref
+  :db/cardinality        :db.cardinality/many
+  :db/doc                "Transaction effectuées par l'utilisateur"
+  :db.install/_attribute :db.part/db}
+
+
+ ;; Organisation
+
+ ; name
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :organisation/nom
+  :db/valueType          :db.type/string
+  :db/fulltext           true
+  :db/unique             db.unique/value
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Nom de l'organisation"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :organisation/actif
+  :db/valueType          :db.type/boolean
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "L'organisation est active?"
+  :db.install/_attribute :db.part/db}
+
+ ; Utilisateur appartient à l'organisation
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :organisation/users
+  :db/valueType          :db.type/ref
+  :db/cardinality        :db.cardinality/many
+  :db/doc                "Utilisateur appartient à l'organisation"
+  :db.install/_attribute :db.part/db}
+
+ ; Articles de l'organisation
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :organisation/articles
+  :db/valueType          :db.type/ref
+  :db/cardinality        :db.cardinality/many
+  :db/doc                "Articles de l'organisation"
+  :db.install/_attribute :db.part/db}
+
+ ; Evenements de l'organisation
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :organisation/evenements
+  :db/valueType          :db.type/ref
+  :db/cardinality        :db.cardinality/many
+  :db/doc                "Événements de l'organisation"
+  :db.install/_attribute :db.part/db}
+
+ ;; Client
+
+ ; name
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :client/nom
+  :db/valueType          :db.type/string
+  :db/fulltext           true
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Nom d'un client"
+  :db.install/_attribute :db.part/db}
+
+ ; Courriel
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :client/courriel
+  :db/valueType          :db.type/string
+  :db/fulltext           true
+  :db/unique             db.unique/value
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Courriel d'un client"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :client/codePostal
+  :db/valueType          :db.type/string
+  :db/fulltext           true
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Code postal d'un client"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :client/balance
+  :db/valueType          :db.type/long
+  :db/fulltext           true
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Balance d'un client"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :client/idNFC
+  :db/valueType          :db.type/string
+  :db/fulltext           true
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Carte NFC du client client"
+  :db.install/_attribute :db.part/db}
+
+ ; Transaction appertant au client
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :client/transact
+  :db/valueType          :db.type/ref
+  :db/cardinality        :db.cardinality/many
+  :db/doc                "Transactions du client"
+  :db.install/_attribute :db.part/db}
+
+
+ ;; Événement
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :evenement/nom
+  :db/valueType          :db.type/string
+  :db/fulltext           true
+  :db/unique             db.unique/value
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Nom d'un événement"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :evenement/dateDebut
+  :db/valueType          :db.type/instant
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Date de début d'un événement"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :evenement/dateFin
+  :db/valueType          :db.type/instant
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Date de fin d'un événement"
+  :db.install/_attribute :db.part/db}
+
+ ; Clients de l'événement
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :evenement/clients
+  :db/valueType          :db.type/ref
+  :db/cardinality        :db.cardinality/many
+  :db/doc                "Clients de l'événment"
+  :db.install/_attribute :db.part/db}
+
+ ; Transactions effectuée lors de l'événement
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :evenement/transact
+  :db/valueType          :db.type/ref
+  :db/cardinality        :db.cardinality/many
+  :db/doc                "Transaction effectuées lors de l'événement"
+  :db.install/_attribute :db.part/db}
+
+
+ ;; Article
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :article/nom
+  :db/valueType          :db.type/string
+  :db/fulltext           true
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Nom d'un article"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :article/categorie
+  :db/valueType          :db.type/string
+  :db/fulltext           true
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Catégorie d'un article"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :article/prix
+  :db/valueType          :db.type/long
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Coût d'un article"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :article/actif
+  :db/valueType          :db.type/boolean
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "L'article est disponible pour la vente"
+  :db.install/_attribute :db.part/db}
+
+
+ ;; Article-Transaction
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :articleTransaction/quantite
+  :db/valueType          :db.type/long
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Nombre d'article selectionné"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :articleTransaction/article
+  :db/valueType          :db.type/ref
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Article mentionné"
+  :db.install/_attribute :db.part/db}
+
+ ;; Transactions
+
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :transaction/entrees
+  :db/valueType          :db.type/ref
+  :db/cardinality        :db.cardinality/many
+  :db/doc                "Liste des articles-transactions composant la transaction."
+  :db.install/_attribute :db.part/db}
+
+ ]

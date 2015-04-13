@@ -1,0 +1,43 @@
+[
+ ; Organisation
+ {:db/id #db/id[:db.part/user -1] :organisation/nom "org1"}
+ {:db/id #db/id[:db.part/user -1] :organisation/actif true}
+
+ ; Utilisateur
+ {:db/id #db/id[:db.part/user -2] :user/nom "Jack Johnson"}
+ {:db/id #db/id[:db.part/user -2] :user/courriel "jj@test.com"}
+ {:db/id #db/id[:db.part/user -2] :user/motdepasse "test"}
+ {:db/id #db/id[:db.part/user -2] :user/categorie :categorie/service-clientelle}
+ {:db/id #db/id[:db.part/user -2] :user/actif true}
+ {:db/id #db/id[:db.part/user -2] :organisation/_users #db/id[:db.part/user -1]}
+
+ ; Evenement
+ {:db/id #db/id[:db.part/user -3] :evenement/nom "FestivalDeLaTruite"}
+ {:db/id #db/id[:db.part/user -3] :evenement/dateDebut #inst "1985-04-12T23:20:50.52Z"}
+ {:db/id #db/id[:db.part/user -3] :evenement/dateFin   #inst "1985-04-20T23:20:50.52Z"}
+ {:db/id #db/id[:db.part/user -3] :organisation/_evenements #db/id[:db.part/user -1]}
+
+ ; Client
+ {:db/id #db/id[:db.part/user -4] :client/nom "Kerby Geffrard"}
+ {:db/id #db/id[:db.part/user -4] :client/courriel "kerby.geffrard@gmail.com"}
+ {:db/id #db/id[:db.part/user -4] :client/codePostal "J2M1B3"}
+ {:db/id #db/id[:db.part/user -4] :client/balance 10}
+ {:db/id #db/id[:db.part/user -4] :client/idNFC "asonetidsnnsat3asnote"}
+ {:db/id #db/id[:db.part/user -4] :evenement/_clients #db/id[:db.part/user -3]}
+
+ ; Article
+ {:db/id #db/id[:db.part/user -5] :article/nom "Cheeze Wiz"}
+ {:db/id #db/id[:db.part/user -5] :article/categorie "alimentaire"}
+ {:db/id #db/id[:db.part/user -5] :article/prix 5}
+ {:db/id #db/id[:db.part/user -5] :article/actif true}
+ {:db/id #db/id[:db.part/user -5] :organisation/_articles #db/id[:db.part/user -1]}
+
+ ; Transaction
+ {:db/id #db/id[:db.part/user -6] :transaction/entrees #db/id[:db.part/user -7]}
+ {:db/id #db/id[:db.part/user -6] :evenement/_transact #db/id[:db.part/user -3]}
+ {:db/id #db/id[:db.part/user -6] :user/_transact #db/id[:db.part/user -2]}
+ {:db/id #db/id[:db.part/user -6] :client/_transact #db/id[:db.part/user -4]}
+
+ ; Article-Transaction
+ {:db/id #db/id[:db.part/user -7] :articleTransaction/quantite 2}
+ {:db/id #db/id[:db.part/user -7] :articleTransaction/article #db/id[:db.part/user -5]}]
