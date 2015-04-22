@@ -3,7 +3,7 @@
 
   (:gen-class))
 
-(def uri "datomic:free://172.17.0.4:4334/ew")
+(def uri "datomic:free://172.17.0.2:4334/ew")
 (def schema-tx (-> "resources/ew-schema.edn" slurp read-string))
 (def data-tx (-> "resources/ew-seed-data.edn" slurp read-string))
 

@@ -4,21 +4,37 @@
             [io.pedestal.http :as bootstrap]
             [datomic.api :as d]
 
-            [ewback.peer :as p]))
+            [ewback.peer :as p])
+  (:import (java.util Date)))
 
 
 (defn list
   [request]
+  (let [ev-id (-> request :path-params :ev-id)]
 
-  (bootstrap/json-response
-    (d/q '[:find [?e ...]
-           :in $ ?ev
-           :where
-           [?e :client/nom _]
-           [?ev :evenement/clients ?e]
+    (->
+      (cond
+        (-> request :query-params (contains? :card-id))
+        (d/q '[:find [(pull ?e [*]) ...]
+               :in $ ?card-id ?current-date
+               :where
+               [?e :client/idNFC ?card-id]
+               [?ev :evenement/clients ?e]
+               [?ev :evenement/dateDebut ?dd]
+               [?ev :evenement/dateFin ?df]
+               [(< ?dd ?current-date)]
+               [(> ?df ?current-date)]]
 
-           ]
-         (d/db p/conn)))
+             (d/db p/conn) (-> request :query-params :card-id) (Date.))
+
+        :else
+        (d/q '[:find (pull ?clients [*])
+               :in $ ?ev-id
+               :where
+               [?ev-id :evenement/clients ?clients]]
+             (d/db p/conn) (Long/parseLong ev-id)))
+
+      bootstrap/json-response))
   )
 
 
@@ -57,5 +73,13 @@
              :in $ ?org-name
              :where [?e :organisation/nom ?org-name]]
            (d/db p/conn) org-name))))
+
+(defn display-by-wallet-id
+  [request]
+
+  (let [org-name (-> request :path-params :org-name)
+        wallet-id (-> request :path-params :wallet-id)])
+
+  )
 
 

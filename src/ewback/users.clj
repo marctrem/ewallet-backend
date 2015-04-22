@@ -19,7 +19,7 @@
   (let [org-name (-> request :path-params :org-name)]
 
     (bootstrap/json-response
-      (d/q '[:find [(pull ?e  [:db/id :user/nom :user/courriel]) ...]
+      (d/q '[:find [(pull ?e  [:db/id :user/nom :user/courriel {:user/categorie [:db/ident]}]) ...]
              :in $ ?org
              :where [?org-id :organisation/users ?e]]
            (d/db p/conn) org-name))))

@@ -40,9 +40,11 @@
 
                 ["/evenements" {:get ev/list
                            :post ev/create}
-                 ["/actuel" {:get ev/current-event}]
 
-                 ["/:ev-id" {}
+
+                 ["/:ev-id"
+                  ^:interceptors [ev/replace-current-event]
+                  {}
                   ["/clients" {:get customers/list}]]]]]]
 
              ]])

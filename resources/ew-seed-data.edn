@@ -3,18 +3,42 @@
  {:db/id #db/id[:db.part/user -1] :organisation/nom "org1"}
  {:db/id #db/id[:db.part/user -1] :organisation/actif true}
 
- ; Utilisateur
+ ; Utilisateur (service clientelle)
  {:db/id #db/id[:db.part/user -2] :user/nom "Jack Johnson"}
- {:db/id #db/id[:db.part/user -2] :user/courriel "jj@test.com"}
+ {:db/id #db/id[:db.part/user -2] :user/courriel "service@org1.com"}
  {:db/id #db/id[:db.part/user -2] :user/motdepasse "test"}
  {:db/id #db/id[:db.part/user -2] :user/categorie :categorie/service-clientelle}
  {:db/id #db/id[:db.part/user -2] :user/actif true}
  {:db/id #db/id[:db.part/user -2] :organisation/_users #db/id[:db.part/user -1]}
 
+ ; Utilisateur (commis)
+ {:db/id #db/id[:db.part/user -8] :user/nom "Jack Commis"}
+ {:db/id #db/id[:db.part/user -8] :user/courriel "commis@org1.com"}
+ {:db/id #db/id[:db.part/user -8] :user/motdepasse "test"}
+ {:db/id #db/id[:db.part/user -8] :user/categorie :categorie/commis}
+ {:db/id #db/id[:db.part/user -8] :user/actif true}
+ {:db/id #db/id[:db.part/user -8] :organisation/_users #db/id[:db.part/user -1]}
+
+ ; Utilisateur (vendeur)
+ {:db/id #db/id[:db.part/user -9] :user/nom "Jack Vendeur"}
+ {:db/id #db/id[:db.part/user -9] :user/courriel "vendeur@org1.com"}
+ {:db/id #db/id[:db.part/user -9] :user/motdepasse "test"}
+ {:db/id #db/id[:db.part/user -9] :user/categorie :categorie/vendeur}
+ {:db/id #db/id[:db.part/user -9] :user/actif true}
+ {:db/id #db/id[:db.part/user -9] :organisation/_users #db/id[:db.part/user -1]}
+
+ ; Utilisateur (organisateur)
+ {:db/id #db/id[:db.part/user -10] :user/nom "Bruce Wayne"}
+ {:db/id #db/id[:db.part/user -10] :user/courriel "organisateur@org1.com"}
+ {:db/id #db/id[:db.part/user -10] :user/motdepasse "test"}
+ {:db/id #db/id[:db.part/user -10] :user/categorie :categorie/organisateur}
+ {:db/id #db/id[:db.part/user -10] :user/actif true}
+ {:db/id #db/id[:db.part/user -10] :organisation/_users #db/id[:db.part/user -1]}
+
  ; Evenement
  {:db/id #db/id[:db.part/user -3] :evenement/nom "FestivalDeLaTruite"}
  {:db/id #db/id[:db.part/user -3] :evenement/dateDebut #inst "1985-04-12T23:20:50.52Z"}
- {:db/id #db/id[:db.part/user -3] :evenement/dateFin   #inst "1985-04-20T23:20:50.52Z"}
+ {:db/id #db/id[:db.part/user -3] :evenement/dateFin   #inst "2016-04-20T23:20:50.52Z"}
  {:db/id #db/id[:db.part/user -3] :organisation/_evenements #db/id[:db.part/user -1]}
 
  ; Client

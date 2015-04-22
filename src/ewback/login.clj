@@ -32,7 +32,7 @@
 
     (cond
       (-> missing-keys empty? not) (ring-resp/response (str "Missing keys " missing-keys))
-      :else (let [rs (d/q '[:find (pull ?e [*]) .
+      :else (let [rs (d/q '[:find (pull ?e [* {:user/categorie [:db/ident]}]) .
                                     :in $ ?nom ?mdp
                                     :where
                                     [?e :user/courriel ?nom]

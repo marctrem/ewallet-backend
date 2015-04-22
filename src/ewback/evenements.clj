@@ -2,6 +2,7 @@
   (:require [ring.util.response :as ring-resp]
             [io.pedestal.http.body-params :as body-params]
             [io.pedestal.http :as bootstrap]
+            [io.pedestal.interceptor :as intcpt]
             [io.pedestal.log :as log]
             [clj-time.format :as tf]
 
@@ -62,9 +63,6 @@
 
               (ring-resp/response (with-out-str (clojure.pprint/pprint tx-res)))))
 
-
-
-
     ))
 
 (defn display
@@ -79,6 +77,10 @@
            (d/db p/conn) org-name))))
 
 
-(defn current-event
-  [request]
-  (bootstrap/json-response {:status :ok}))
+(def replace-current-event
+  (intcpt/interceptor
+    {:enter
+     (fn [context]
+       (if (-> context :request :path-params :ev-id (= "current"))
+         (assoc-in context [:request :path-params :ev-id] "17592186045427")
+         context))}))
