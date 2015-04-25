@@ -15,7 +15,10 @@
     (->
       (cond
         (-> request :query-params (contains? :card-id))
-        (d/q '[:find [(pull ?e [*]) ...]
+        (d/q '[:find [(pull ?e [* {:client/transact
+                                   [* {:transaction/entrees
+                                       [* {:articleTransaction/article
+                                           [*]}]}]}]) ...]
                :in $ ?card-id ?current-date
                :where
                [?e :client/idNFC ?card-id]
@@ -37,6 +40,27 @@
       bootstrap/json-response))
   )
 
+(defn update
+  [request]
+  (let [request ((body-params/custom-json-parser) request)
+        ev-id (-> request :path-params :ev-id)
+
+        resource-iden-key :client/courriel
+        updatable-keys #{:client/nom :client/courriel :client/codePostal :client/balance}
+
+        difference-with-provided-keys (-> request :json-params keys set (clojure.set/difference updatable-keys))]
+
+    (-> (cond
+          (-> difference-with-provided-keys empty? not)
+          {:error true :message (str "Unknown key(s) " difference-with-provided-keys)}
+
+          :else (let [query (-> request :json-params
+                                (assoc :db/id [:client/courriel (-> request :path-params :client-courriel)]))
+                      tx-res @(d/transact p/conn [query])]
+
+                  {:error false})
+          )
+        bootstrap/json-response)))
 
 (defn create
   [request]
@@ -74,12 +98,6 @@
              :where [?e :organisation/nom ?org-name]]
            (d/db p/conn) org-name))))
 
-(defn display-by-wallet-id
-  [request]
 
-  (let [org-name (-> request :path-params :org-name)
-        wallet-id (-> request :path-params :wallet-id)])
-
-  )
 
 

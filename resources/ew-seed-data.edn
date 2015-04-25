@@ -46,7 +46,7 @@
  {:db/id #db/id[:db.part/user -4] :client/courriel "kerby.geffrard@gmail.com"}
  {:db/id #db/id[:db.part/user -4] :client/codePostal "J2M1B3"}
  {:db/id #db/id[:db.part/user -4] :client/balance 10}
- {:db/id #db/id[:db.part/user -4] :client/idNFC "asonetidsnnsat3asnote"}
+ {:db/id #db/id[:db.part/user -4] :client/idNFC "04da6e0a4b3f80"}
  {:db/id #db/id[:db.part/user -4] :evenement/_clients #db/id[:db.part/user -3]}
 
  ; Article

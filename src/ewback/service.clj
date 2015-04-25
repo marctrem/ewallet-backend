@@ -45,7 +45,8 @@
                  ["/:ev-id"
                   ^:interceptors [ev/replace-current-event]
                   {}
-                  ["/clients" {:get customers/list}]]]]]]
+                  ["/clients" {:get customers/list}
+                   ["/:client-courriel" {:put customers/update}]]]]]]]
 
              ]])
 
