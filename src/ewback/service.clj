@@ -10,6 +10,7 @@
             [ewback.evenements :as ev]
             [ewback.login :as login]
             [ewback.customers :as customers]
+            [ewback.articles :as articles]
             ))
 
 (defn about-page
@@ -33,6 +34,7 @@
 
                ["/:org-name" {:get organisations/display}
 
+                ["/articles" {:get articles/list}]
                 ["/login" {:post login/verify-creds}]
 
                 ["/users" {:get users/list
@@ -46,7 +48,8 @@
                   ^:interceptors [ev/replace-current-event]
                   {}
                   ["/clients" {:get customers/list}
-                   ["/:client-courriel" {:put customers/update}]]]]]]]
+                   ["/:client-courriel" {:put customers/update}
+                    ["/commandes" {:post customers/new-command}]]]]]]]]
 
              ]])
 

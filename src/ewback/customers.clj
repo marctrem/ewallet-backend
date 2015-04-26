@@ -22,11 +22,12 @@
                :in $ ?card-id ?current-date
                :where
                [?e :client/idNFC ?card-id]
-               [?ev :evenement/clients ?e]
-               [?ev :evenement/dateDebut ?dd]
-               [?ev :evenement/dateFin ?df]
-               [(< ?dd ?current-date)]
-               [(> ?df ?current-date)]]
+               ;[?ev :evenement/clients ?e]
+               ;[?ev :evenement/dateDebut ?dd]
+               ;[?ev :evenement/dateFin ?df]
+               ;[(< ?dd ?current-date)]
+               ;[(> ?df ?current-date)]
+               ]
 
              (d/db p/conn) (-> request :query-params :card-id) (Date.))
 
@@ -46,7 +47,7 @@
         ev-id (-> request :path-params :ev-id)
 
         resource-iden-key :client/courriel
-        updatable-keys #{:client/nom :client/courriel :client/codePostal :client/balance}
+        updatable-keys #{:client/nom :client/courriel :client/codePostal :client/balance :client/idNFC}
 
         difference-with-provided-keys (-> request :json-params keys set (clojure.set/difference updatable-keys))]
 
@@ -54,8 +55,15 @@
           (-> difference-with-provided-keys empty? not)
           {:error true :message (str "Unknown key(s) " difference-with-provided-keys)}
 
-          :else (let [query (-> request :json-params
-                                (assoc :db/id [:client/courriel (-> request :path-params :client-courriel)]))
+          :else (let [add-to-id (let [rs (d/q '[:find [?e ...]
+                                                 :in $ ?courriel
+                                                 :where
+                                                 [?e :client/courriel ?courriel]] (d/db p/conn) (-> request :json-params :client/courriel))]
+                                  (if (empty? rs)
+                                    #db/id[:db.part/user]
+                                    (first rs)))
+                      query (-> request :json-params
+                                (assoc :db/id add-to-id))
                       tx-res @(d/transact p/conn [query])]
 
                   {:error false})
@@ -98,6 +106,46 @@
              :where [?e :organisation/nom ?org-name]]
            (d/db p/conn) org-name))))
 
+(defn new-command
+  [request]
+  (let [request ((body-params/custom-json-parser) request)
+        form (reduce #(assoc %1 (Long/parseLong (name (key %2))) (val %2)) {} (-> request :json-params))
+
+
+        transaction-query {:db/id #db/id[:db.part/user -1]
+               :client/_transact [:client/courriel (-> request :path-params :client-courriel)]}
+
+        amount (d/q '[:find ?amount .
+                      :in $ ?courriel
+                      :where
+                      [?client :client/courriel ?courriel]
+                      [?client :client/balance ?amount]
+                      ] (d/db p/conn) (-> request :path-params :client-courriel))
+
+        articles (d/q '[:find [(pull ?e [:db/id :article/prix]) ...]
+                        :in $ ?org-nom
+                        :where
+                        [?org :organisation/nom ?org-nom]
+                        [?org :organisation/articles ?e]]
+                      (d/db p/conn) (-> request :path-params :org-name))
+        articles (reduce #(assoc %1 (%2 :db/id) (%2 :article/prix)) {} articles)
+        cout (reduce #(+ %1 (* (articles (key %2)) (val %2))) 0 form)
+
+        query (reduce #(conj %1 {:db/id #db/id[:db.part/user]
+                                 :transaction/_entrees #db/id[:db.part/user -1]
+                                 :articleTransaction/article (key %2)
+                                 :articleTransaction/quantite (val %2)}) [transaction-query] form)
+
+        query (conj query {:db/id [:client/courriel  (-> request :path-params :client-courriel)]
+                           :client/balance (- amount cout)})
+
+        ]
+
+    (d/transact p/conn query)
+
+
+
+    (bootstrap/json-response {:error false})))
 
 
 

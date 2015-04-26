@@ -51,10 +51,29 @@
 
  ; Article
  {:db/id #db/id[:db.part/user -5] :article/nom "Cheeze Wiz"}
- {:db/id #db/id[:db.part/user -5] :article/categorie "alimentaire"}
- {:db/id #db/id[:db.part/user -5] :article/prix 5}
+ {:db/id #db/id[:db.part/user -5] :article/categorie "Nourriture"}
+ {:db/id #db/id[:db.part/user -5] :article/prix 2}
  {:db/id #db/id[:db.part/user -5] :article/actif true}
  {:db/id #db/id[:db.part/user -5] :organisation/_articles #db/id[:db.part/user -1]}
+
+ {:db/id #db/id[:db.part/user -11] :article/nom "KD avec Saucisses"}
+ {:db/id #db/id[:db.part/user -11] :article/categorie "Nourriture"}
+ {:db/id #db/id[:db.part/user -11] :article/prix 3}
+ {:db/id #db/id[:db.part/user -11] :article/actif true}
+ {:db/id #db/id[:db.part/user -11] :organisation/_articles #db/id[:db.part/user -1]}
+
+ {:db/id #db/id[:db.part/user -12] :article/nom "PBR"}
+ {:db/id #db/id[:db.part/user -12] :article/categorie "Breuvage"}
+ {:db/id #db/id[:db.part/user -12] :article/prix 5}
+ {:db/id #db/id[:db.part/user -12] :article/actif true}
+ {:db/id #db/id[:db.part/user -12] :organisation/_articles #db/id[:db.part/user -1]}
+
+ {:db/id #db/id[:db.part/user -13] :article/nom "Burger froid poulet"}
+ {:db/id #db/id[:db.part/user -13] :article/categorie "Nourriture"}
+ {:db/id #db/id[:db.part/user -13] :article/prix 10}
+ {:db/id #db/id[:db.part/user -13] :article/actif true}
+ {:db/id #db/id[:db.part/user -13] :organisation/_articles #db/id[:db.part/user -1]}
+
 
  ; Transaction
  {:db/id #db/id[:db.part/user -6] :transaction/entrees #db/id[:db.part/user -7]}

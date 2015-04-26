@@ -143,6 +143,7 @@
  {:db/id                 #db/id[:db.part/db]
   :db/ident              :client/idNFC
   :db/valueType          :db.type/string
+  :db/unique             db.unique/value
   :db/fulltext           true
   :db/cardinality        :db.cardinality/one
   :db/doc                "Carte NFC du client client"
